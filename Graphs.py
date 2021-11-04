@@ -3,6 +3,23 @@ from networkx.generators.random_graphs import erdos_renyi_graph
 from matplotlib import pyplot as plt
 from igraph import *
 
+
+def depth_first(g, x, y):
+	dfs = g.dfs(x)[0]
+	if x not in dfs or y not in dfs:
+		print("X and Y vertices are not connected")
+	else:
+		i = dfs.index(y)
+		print("Minimal distance from " + str(x) + " to " + str(y) + ": " + str(len(dfs[:i])))
+
+def breadth_first(g, x, y):
+	bfs = g.bfs(x)[0]
+	if x not in bfs or y not in bfs:
+		print("X and Y vertices are not connected")
+	else:
+		i = bfs.index(y)
+		print("Minimal distance from " + str(x) + " to " + str(y) + ": " + str(len(bfs[:i])))
+
 graph = erdos_renyi_graph(100, 0.05)
 
 graph = list(graph.edges)[:200]
@@ -54,6 +71,18 @@ g = Graph()
 g.add_vertices(100)
 g.add_edges(graph)
 layout = g.layout("kamada_kawai")
+adj_list = {}
+temp = g.get_adjlist()
+for i in range(100):
+	adj_list[i] = temp[i]
+
+for i in range(10):
+	print(str(i) + ": " + str(adj_list[i]))
+
+print(g.get_adjacency()[:10])
+
+breadth_first(g, 0, 1)
+depth_first(g, 0, 1)
 fig, ax = plt.subplots()
 plot(g, layout=layout, bbox=(300, 300), margin=20, target=ax)
 plt.show()
