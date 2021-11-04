@@ -1,6 +1,7 @@
 from numpy import random
 from networkx.generators.random_graphs import erdos_renyi_graph
 from matplotlib import pyplot as plt
+from igraph import *
 
 graph = erdos_renyi_graph(100, 0.05)
 
@@ -49,8 +50,10 @@ while difference > 400:
 			if difference == 400:
 				break
 
-plt.xlim(-10, 110)
-plt.ylim(-10, 110)
-plt.plot([x[0] for x in graph], [x[1] for x in graph], color='green', linestyle='dashed', linewidth = 3,
-         marker='o', markerfacecolor='blue', markersize=12)
-# plt.show()
+g = Graph()
+g.add_vertices(100)
+g.add_edges(graph)
+layout = g.layout("kamada_kawai")
+fig, ax = plt.subplots()
+plot(g, layout=layout, bbox=(300, 300), margin=20, target=ax)
+plt.show()
