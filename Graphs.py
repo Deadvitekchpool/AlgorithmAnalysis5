@@ -12,8 +12,6 @@ def depth_first(g, x, y):
 		i = dfs.index(y)
 		dfs = dfs[:i + 1]
 		length = len(dfs)
-		print("The road of the search:")
-		print(dfs)
 		adj_list = g.get_adjlist()
 		dfs_copy = dfs
 		i = 0
@@ -30,11 +28,12 @@ def depth_first(g, x, y):
 						break
 				if k:
 					dfs_copy = dfs_copy[:i + 1] + dfs_copy[k:]
-					print(dfs_copy, dfs_copy[i])
+					# print(dfs_copy, dfs_copy[i])
 				i += 1
 
-		# print(dfs_copy)
-		# print("Minimal distance from " + str(x) + " to " + str(y) + ": " + str(length))
+		print("The road of the DFS:")
+		print(dfs_copy)
+		print("Minimal distance from " + str(x) + " to " + str(y) + ": " + str(len(dfs_copy) - 1))
 
 def breadth_first(g, x, y):
 	bfs = g.bfs(x)[0]
@@ -44,19 +43,28 @@ def breadth_first(g, x, y):
 		i = bfs.index(y)
 		bfs = bfs[:i + 1]
 		length = len(bfs)
-		print("The road of the search:")
-		print(bfs)
 		adj_list = g.get_adjlist()
-		for i in range(0, len(bfs) - 1):
-			init_point = bfs[i]
-			temp = adj_list[init_point]
-			k = 0
-			for p in temp:
-				if p in bfs[i + 1:]:
-					k += 1
-			length = length - k + 1		
+		bfs_copy = bfs
+		i = 0
+		while True:
+			init_point = bfs_copy[i]
+			if init_point == bfs_copy[-1]:
+				break
+			else:
+				temp = adj_list[init_point]
+				k = 0
+				for e in reversed(bfs_copy[bfs_copy.index(init_point) + 1:]):
+					if e in temp:
+						k = bfs_copy.index(e)
+						break
+				if k:
+					bfs_copy = bfs_copy[:i + 1] + bfs_copy[k:]
+					# print(bfs_copy, bfs_copy[i])
+				i += 1
 
-		print("Minimal distance from " + str(x) + " to " + str(y) + ": " + str(len(bfs[:i])))
+		print("The road of the BFS:")
+		print(bfs_copy)
+		print("Minimal distance from " + str(x) + " to " + str(y) + ": " + str(len(bfs_copy) - 1))
 
 graph = erdos_renyi_graph(100, 0.05)
 
@@ -120,8 +128,7 @@ for i in range(100):
 # print(g.get_adjacency()[:10])
 
 depth_first(g, 0, 1)
-# print(dfs(temp, 0, 1))
-# breadth_first(g, 0, 1)
+breadth_first(g, 0, 1)
 
 fig, ax = plt.subplots()
 plot(g, layout=layout, bbox=(300, 300), margin=20, target=ax)
