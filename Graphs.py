@@ -4,36 +4,36 @@ from matplotlib import pyplot as plt
 from igraph import *
 
 
-def depth_first(g, x, y):
-	dfs = g.dfs(x)[0]
-	if x not in dfs or y not in dfs:
-		print("X and Y vertices are not connected")
-	else:
-		i = dfs.index(y)
-		dfs = dfs[:i + 1]
-		length = len(dfs)
-		adj_list = g.get_adjlist()
-		dfs_copy = dfs
-		i = 0
-		while True:
-			init_point = dfs_copy[i]
-			if init_point == dfs_copy[-1]:
-				break
-			else:
-				temp = adj_list[init_point]
-				k = 0
-				for e in reversed(dfs_copy[dfs_copy.index(init_point) + 1:]):
-					if e in temp:
-						k = dfs_copy.index(e)
-						break
-				if k:
-					dfs_copy = dfs_copy[:i + 1] + dfs_copy[k:]
-					# print(dfs_copy, dfs_copy[i])
-				i += 1
+# def depth_first(g, x, y):
+# 	dfs = g.dfs(x)[0]
+# 	if x not in dfs or y not in dfs:
+# 		print("X and Y vertices are not connected")
+# 	else:
+# 		i = dfs.index(y)
+# 		dfs = dfs[:i + 1]
+# 		length = len(dfs)
+# 		adj_list = g.get_adjlist()
+# 		dfs_copy = dfs
+# 		i = 0
+# 		while True:
+# 			init_point = dfs_copy[i]
+# 			if init_point == dfs_copy[-1]:
+# 				break
+# 			else:
+# 				temp = adj_list[init_point]
+# 				k = 0
+# 				for e in reversed(dfs_copy[dfs_copy.index(init_point) + 1:]):
+# 					if e in temp:
+# 						k = dfs_copy.index(e)
+# 						break
+# 				if k:
+# 					dfs_copy = dfs_copy[:i + 1] + dfs_copy[k:]
+# 					# print(dfs_copy, dfs_copy[i])
+# 				i += 1
 
-		print("The road of the DFS:")
-		print(dfs_copy)
-		print("Minimal distance from " + str(x) + " to " + str(y) + ": " + str(len(dfs_copy) - 1))
+# 		print("The road of the DFS:")
+# 		print(dfs_copy)
+# 		print("Minimal distance from " + str(x) + " to " + str(y) + ": " + str(len(dfs_copy) - 1))
 
 def breadth_first(g, x, y):
 	bfs = g.bfs(x)[0]
@@ -127,7 +127,13 @@ for i in range(100):
 
 # print(g.get_adjacency()[:10])
 
-depth_first(g, 0, 1)
+# depth_first(g, 0, 1)
+
+print('DFS: ')
+dfs = g.dfs(0)[0]
+print(dfs[:30])
+print(dfs[30:60])
+print(dfs[60:])
 breadth_first(g, 0, 1)
 
 fig, ax = plt.subplots()
